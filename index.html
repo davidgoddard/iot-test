@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +14,26 @@
 
   <script>
     // MQTT broker settings
-    const broker = "wss://1a1cbc54ce1c4fde8721de54bc402d5d.s1.eu.hivemq.cloud:8884/mqtt"; // WebSocket URL
+    const broker = "wss://1a1cbc54ce1c4fde8721de54bc402d5d.s1.eu.hivemq.cloud:8884/mqtt"; // Replace with your HiveMQ URL
+    const username = "test-switch"; // Replace with your HiveMQ username
+    const password = "test-Switch1234"; // Replace with your HiveMQ password
     const topic = "home/plug/control"; // Topic to publish to
     const clientId = "WebClient" + Math.random().toString(16).substr(2, 8);
 
-    // Connect to MQTT broker
-    const client = mqtt.connect(broker, { clientId });
+    // Connect to MQTT broker with authentication
+    const client = mqtt.connect(broker, {
+      clientId,
+      username,
+      password,
+    });
 
+    // Log connection status
     client.on("connect", () => {
       console.log("Connected to MQTT broker");
+    });
+
+    client.on("error", (err) => {
+      console.error("Connection failed:", err);
     });
 
     // Publish a command
@@ -32,3 +44,4 @@
   </script>
 </body>
 </html>
+
