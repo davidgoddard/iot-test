@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Plug Control</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+<body>
+  <h1>Smart Plug Control</h1>
+  <button onclick="sendCommand('on')">Turn ON</button>
+  <button onclick="sendCommand('off')">Turn OFF</button>
+
+  <script>
+    // MQTT broker settings
+    const broker = "1a1cbc54ce1c4fde8721de54bc402d5d.s1.eu.hivemq.cloud:8884/mqtt"; // WebSocket URL
+    const topic = "home/plug/control"; // Topic to publish to
+    const clientId = "WebClient" + Math.random().toString(16).substr(2, 8);
+
+    // Connect to MQTT broker
+    const client = mqtt.connect(broker, { clientId });
+
+    client.on("connect", () => {
+      console.log("Connected to MQTT broker");
+    });
+
+    // Publish a command
+    function sendCommand(command) {
+      client.publish(topic, command);
+      console.log(`Published: ${command}`);
+    }
+  </script>
+</body>
+</html>
